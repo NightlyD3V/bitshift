@@ -121,8 +121,14 @@ document.addEventListener("DOMContentLoaded", function () {
   socket.on("playerLeft", id => {
     console.log("A player left", id);
     const mesh = players.get(id);
-    if(mesh) {
+
+    if (mesh) {
       scene.remove(mesh);
+
+      // optional but good cleanup
+      mesh.geometry.dispose();
+      mesh.material.dispose();
+
       players.delete(id);
     }
   });
