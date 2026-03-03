@@ -2,6 +2,7 @@ console.log("Hey, NightlyD3V here, thanks for checking out my site and taking a 
 // GLOBALS 
 const socket = io("https://chat-server-3bcx.onrender.com", { query: {type: "game"} });
 const otherPlayers = {};
+const players = new Map();
 
 document.addEventListener("DOMContentLoaded", function () {
   // STATISTICS
@@ -89,44 +90,43 @@ document.addEventListener("DOMContentLoaded", function () {
   scene.add( cube );
   
   // PLAYER(s)
-  const geo_player = new THREE.BoxGeometry(1,2,1);
-  const mat_player = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-  const player = new THREE.Mesh( geo_player, mat_player );
-  player.position.y = 1;
-  player.position.x += tileSize;
-  player.position.z += 4 * tileSize;
-  scene.add(player);
-  
-  function spawnOtherPlayer(id) {
-    const geometry = new THREE.BoxGeometry(1, 2, 1);
-    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    const mesh = new THREE.Mesh(geometry, material);
-  
-    mesh.position.set(
-      (Math.random() - 0.5) * 10,
-      1,
-      (Math.random() - 0.5) * 10
-    );
-  
-    scene.add(mesh);
-    otherPlayers[id] = mesh;
+  function lerp(a, b, t) {
+  return a + (b - a) * t;
   }
-  
-  socket.on("existingPlayers", (ids) => {
-    ids.forEach(id => {
-      if (id === socket.id) return; 
-      spawnOtherPlayer(id);
+
+  socket.on("worldUpdate", snapshot => {
+    snapshot.forEach(p => {
+      const mesh = players.get(p.id);
+      if(!mesh) return;
+      mesh.position.x += (p.x - mesh.position.x) * 0.1;
+      mesh.position.y += (p.y - mesh.position.y) * 0.1;
+      mesh.position.z += (p.z - mesh.position.z) * 0.1;
     });
   });
     
-  socket.on("playerLeft", (id) => {
-    console.log("a player left");
-    if (otherPlayers[id]) {
-      scene.remove(otherPlayers[id]);
-      delete otherPlayers[id];
+  socket.on("existingPlayers", list => {
+    list.forEach(([id, pos]) => {
+      if (id === socket.id) return;
+      const mesh = new THREE.Mesh(
+      new THREE.CapsuleGeometry(0.5,1.0,4,8),
+      new THREE.MeshBasicMaterial({color:0x00ff00})
+      );
+      mesh.position.set(pos.x,pos.y,pos.z);
+      scene.add(mesh);
+      players.set(id, mesh);
+    });
+  });
+
+  // Remove player
+  socket.on("playerLeft", id => {
+    console.log("A player left", id);
+    const mesh = players.get(id);
+    if(mesh) {
+      scene.remove(mesh);
+      players.delete(id);
     }
   });
-  
+    
   // STREET LAMP
   const loader = new THREE.GLTFLoader();
   loader.load('public/3D/streetlamp.glb', function(gltf) {
