@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
     ids.forEach(id => {
       if (id === socket.id) return; 
       spawnOtherPlayer(id);
-      players[id] = otherPlayer;
+      players[id] = otherPlayers;
     });
   });
   
