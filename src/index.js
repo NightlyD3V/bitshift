@@ -18,8 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // HANDLE BUTTONS 
   const iframe_container = document.querySelector('#iframe-container');
   const chat_button = document.getElementById('chat-button');
-  
-  
+   
   window.addEventListener("message", (event) => {
     if (event.data === "exit-button_clicked") {
       iframe_container.style.setProperty('--speed', '1s');
@@ -117,11 +116,13 @@ document.addEventListener("DOMContentLoaded", function () {
     ids.forEach(id => {
       if (id === socket.id) return; 
       spawnOtherPlayer(id);
+      players[id] = otherPlayer;
     });
   });
   
   socket.on("playerJoined", (id) => {
     console.log("a player joined!");
+    if (id === socket.id) return;
     spawnOtherPlayer(id);
   });
   
