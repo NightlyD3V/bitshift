@@ -118,13 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
       spawnOtherPlayer(id);
     });
   });
-  
-  socket.on("playerJoined", (id) => {
-    console.log("a player joined!");
-    if (id === socket.id) return;
-    spawnOtherPlayer(id);
-  });
-  
+    
   socket.on("playerLeft", (id) => {
     console.log("a player left");
     if (otherPlayers[id]) {
