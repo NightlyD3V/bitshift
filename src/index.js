@@ -88,51 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const cube = new THREE.Mesh( geometry, material );
   cube.position.y = 2;
   scene.add( cube );
-  
-  // PLAYER(s)
-  function lerp(a, b, t) {
-  return a + (b - a) * t;
-  }
 
-  socket.on("worldUpdate", snapshot => {
-    snapshot.forEach(p => {
-      const mesh = players.get(p.id);
-      if(!mesh) return;
-      mesh.position.x += (p.x - mesh.position.x) * 0.1;
-      mesh.position.y += (p.y - mesh.position.y) * 0.1;
-      mesh.position.z += (p.z - mesh.position.z) * 0.1;
-    });
-  });
-    
-  socket.on("existingPlayers", list => {
-    list.forEach(p => {
-      // p = { id, x, y, z }
-      const mesh = new THREE.Mesh(
-        new THREE.BoxGeometry(1,1,1),
-        new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-      );
-      mesh.position.set(p.x, p.y, p.z);
-      scene.add(mesh);
-      otherPlayers[p.id] = mesh;
-    });
-  });
-
-  // Remove player
-  socket.on("playerLeft", id => {
-    console.log("A player left", id);
-    const mesh = players.get(id);
-
-    if (mesh) {
-      scene.remove(mesh);
-
-      // optional but good cleanup
-      mesh.geometry.dispose();
-      mesh.material.dispose();
-
-      players.delete(id);
-    }
-  });
-    
   // STREET LAMP
   const loader = new THREE.GLTFLoader();
   loader.load('public/3D/streetlamp.glb', function(gltf) {
@@ -177,6 +133,70 @@ document.addEventListener("DOMContentLoaded", function () {
   floorMesh.position.y = -0.01;
   scene.add(floorMesh);
   
+  // -- PLAYER(s) --
+  function lerp(a, b, t) {
+  return a + (b - a) * t;
+  }
+
+  socket.on("worldUpdate", snapshot => {
+    const activeIds = new Set(snapshot.map(p => p.id));
+
+    // Removes players that no longer exist
+    for (const [id, mesh] of players.entries()) {
+      if (!activeIds.has(id)) {
+        scene.remove(mesh);
+        mesh.geometry.dispose();
+        mesh.material.dispose();
+        players.delete(id);
+      }
+    }
+
+    // Adds or update players
+    snapshot.forEach(p => {
+      let mesh = players.get(p.id);
+
+      if (!mesh) {
+        mesh = new THREE.Mesh(
+        new THREE.BoxGeometry(1, 1, 1),
+        new THREE.MeshStandardMaterial({ color: 0x00ff00 })
+      );
+
+      scene.add(mesh);
+      players.set(p.id, mesh);
+    }
+    mesh.position.set(p.x, p.y, p.z);
+    });
+  });
+    
+  socket.on("existingPlayers", list => {
+    list.forEach(p => {
+      // p = { id, x, y, z }
+      const mesh = new THREE.Mesh(
+        new THREE.BoxGeometry(1,1,1),
+        new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+      );
+      mesh.position.set(p.x, p.y, p.z);
+      scene.add(mesh);
+      otherPlayers[p.id] = mesh;
+    });
+  });
+
+  // Remove player
+  socket.on("playerLeft", id => {
+    console.log("A player left", id);
+    const mesh = players.get(id);
+
+    if (mesh) {
+      scene.remove(mesh);
+
+      // optional but good cleanup
+      mesh.geometry.dispose();
+      mesh.material.dispose();
+
+      players.delete(id);
+    }
+  });    
+    
   // PLAYER CONTROLS
   const input = { forward: false, backward: false, left: false, right: false };
 
