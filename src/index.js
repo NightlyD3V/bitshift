@@ -158,7 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!mesh) {
         mesh = new THREE.Mesh(
         new THREE.BoxGeometry(1, 1, 1),
-        new THREE.MeshStandardMaterial({ color: 0x00ff00 })
+        new THREE.MeshBasicMaterial({ color: 0x00ff00 })
       );
 
       scene.add(mesh);
@@ -168,19 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
     
-  socket.on("existingPlayers", list => {
-    list.forEach(p => {
-      // p = { id, x, y, z }
-      const mesh = new THREE.Mesh(
-        new THREE.BoxGeometry(1,1,1),
-        new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-      );
-      mesh.position.set(p.x, p.y, p.z);
-      scene.add(mesh);
-      otherPlayers[p.id] = mesh;
-    });
-  });
-
+  
   // Remove player
   socket.on("playerLeft", id => {
     console.log("A player left", id);
