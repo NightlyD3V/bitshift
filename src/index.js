@@ -105,15 +105,15 @@ document.addEventListener("DOMContentLoaded", function () {
   });
     
   socket.on("existingPlayers", list => {
-    list.forEach(([id, pos]) => {
-      if (id === socket.id) return;
+    list.forEach(p => {
+      // p = { id, x, y, z }
       const mesh = new THREE.Mesh(
-      new THREE.CapsuleGeometry(0.5,1.0,4,8),
-      new THREE.MeshBasicMaterial({color:0x00ff00})
+        new THREE.BoxGeometry(1,1,1),
+        new THREE.MeshBasicMaterial({ color: 0x00ff00 })
       );
-      mesh.position.set(pos.x,pos.y,pos.z);
+      mesh.position.set(p.x, p.y, p.z);
       scene.add(mesh);
-      players.set(id, mesh);
+      otherPlayers[p.id] = mesh;
     });
   });
 
