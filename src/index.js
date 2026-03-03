@@ -195,36 +195,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const forward = new THREE.Vector3();
   const speed = 0.04;
   const right = new THREE.Vector3();
-  const moveDirection = new THREE.Vector3();
-  
-  function updatePlayerPosition(playerMesh) {
-    if (input.forward) {
-      player.position.add(forward.clone().multiplyScalar(speed));
-    }
-    
-    if (input.backward) {
-      player.position.add(forward.clone().multiplyScalar(-speed));
-    }
-    
-    if (input.left) {
-      player.position.add(right.clone().multiplyScalar(-speed));
-    }
-    
-    if (input.right) {
-      player.position.add(right.clone().multiplyScalar(speed));
-    }
-  }
+  const moveDirection = new THREE.Vector3(); 
   
   function animate( time ) {
     stats.begin();
     cube.rotation.x = time / 2000;
     cube.rotation.y = time / 1000;
-    controls.target.copy(player.position);
-    camera.getWorldDirection(forward);
-    forward.y = 0;
-    forward.normalize();
-    right.crossVectors(forward, new THREE.Vector3(0, 1, 0)).normalize();
-    updatePlayerPosition(player);
     controls.update();
     renderer.render( scene, camera );
     stats.end();
