@@ -191,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener('keydown', (e) => {
     switch(e.code){
       case 'KeyW': input.forward = true; break;
-      case 'KeyS': input.backward = true; break;
+      case 'KeyS': input.back = true; break;
       case 'KeyA': input.left = true; break;
       case 'KeyD': input.right = true; break;
     }
@@ -200,7 +200,7 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener('keyup', (e) => {
     switch(e.code){
       case 'KeyW': input.forward = false; break;
-      case 'KeyS': input.backward = false; break;
+      case 'KeyS': input.back = false; break;
       case 'KeyA': input.left = false; break;
       case 'KeyD': input.right = false; break;
     }
