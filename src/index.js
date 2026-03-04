@@ -157,20 +157,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (!mesh) {
         mesh = new THREE.Mesh(
-        new THREE.BoxGeometry(1, 1, 1),
-        new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-      );
-      scene.add(mesh);
-      players.set(p.id, mesh);
-      mesh.position.set(p.x, p.y, p.z);
+          new THREE.BoxGeometry(1, 1, 1),
+          new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+        );
+        scene.add(mesh);
+        players.set(p.id, mesh);
+        mesh.position.set(p.x, p.y, p.z);
       } else {
       mesh.position.x += (p.x - mesh.position.x) * 0.1;
       mesh.position.y += (p.y - mesh.position.y) * 0.1;
       mesh.position.z += (p.z - mesh.position.z) * 0.1; 
       }
     });
+  });
     
-  
   // Remove player
   socket.on("playerLeft", id => {
     console.log("A player left", id);
