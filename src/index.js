@@ -185,7 +185,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
       players.delete(id);
     }
-  });    
+  });
+  // CAMERA CONTROLS
+  const cameraOffset = new THREE.Vector3(0, 10, 15); // tweak for your isometric angle
+
+  function updateCamera() {
+    const localMesh = players.get(localPlayerId);
+    if (!localMesh) return;
+    const targetPos = localMesh.position.clone().add(cameraOffset);
+    camera.position.lerp(targetPos, 0.1);
+    camera.lookAt(localMesh.position);
+  }
     
   // PLAYER CONTROLS
   const input = { forward: false, backward: false, left: false, right: false };
@@ -217,6 +227,7 @@ document.addEventListener("DOMContentLoaded", function () {
     cube.rotation.x = time / 2000;
     cube.rotation.y = time / 1000;
     controls.update();
+    updateCamera();
     renderer.render( scene, camera );
     stats.end();
   };
