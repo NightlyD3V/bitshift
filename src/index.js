@@ -197,11 +197,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!localPlayerId) return;
     const localMesh = players.get(localPlayerId);
     if (!localMesh) return;
-    const offset = new THREE.Vector3(0, 10, 15);
-    const desiredPosition = localMesh.position.clone().add(offset);
-    camera.position.lerp(desiredPosition, 0.1);
-    controls.target.lerp(localMesh.position, 0.1);
-    controls.update();  
+    controls.target.copy(localMesh.position);
+    controls.update();
   }
     
   // PLAYER CONTROLS
