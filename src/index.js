@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // -- PLAYER(s) --
   function lerp(a, b, t) {
   return a + (b - a) * t;
-  }
+  };
 
   socket.on("worldUpdate", snapshot => {
     const activeIds = new Set(snapshot.map(p => p.id));
@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
         mesh.material.dispose();
         players.delete(id);
       }
-    }
+    };
 
     // Adds and update players
     snapshot.forEach(p => {
@@ -219,5 +219,5 @@ document.addEventListener("DOMContentLoaded", function () {
     controls.update();
     renderer.render( scene, camera );
     stats.end();
-  }
+  };
 });
