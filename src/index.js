@@ -164,9 +164,9 @@ document.addEventListener("DOMContentLoaded", function () {
       players.set(p.id, mesh);
       mesh.position.set(p.x, p.y, p.z);
       } else {
-      mesh.position.x += (p.x - mesh.position.x) * lerpFactor;
-      mesh.position.y += (p.y - mesh.position.y) * lerpFactor;
-      mesh.position.z += (p.z - mesh.position.z) * lerpFactor;  
+      mesh.position.x += (p.x - mesh.position.x) * 0.1;
+      mesh.position.y += (p.y - mesh.position.y) * 0.1;
+      mesh.position.z += (p.z - mesh.position.z) * 0.1;  
     });
     
   
