@@ -166,7 +166,8 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
       mesh.position.x += (p.x - mesh.position.x) * 0.1;
       mesh.position.y += (p.y - mesh.position.y) * 0.1;
-      mesh.position.z += (p.z - mesh.position.z) * 0.1;  
+      mesh.position.z += (p.z - mesh.position.z) * 0.1; 
+      }
     });
     
   
