@@ -3,7 +3,10 @@ console.log("Hey, NightlyD3V here, thanks for checking out my site and taking a 
 const socket = io("https://chat-server-3bcx.onrender.com", { query: {type: "game"} });
 const otherPlayers = {};
 const players = new Map();
-let localPlayerId = socket.id; 
+let localPlayerId = null; 
+socket.on("connect", () => {
+  localPlayerId = socket.id;
+});
 
 document.addEventListener("DOMContentLoaded", function () {
   // STATISTICS
