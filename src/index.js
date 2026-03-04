@@ -205,12 +205,11 @@ document.addEventListener("DOMContentLoaded", function () {
       case 'KeyD': input.right = false; break;
     }
   });
-  
-  const forward = new THREE.Vector3();
-  const speed = 0.04;
-  const right = new THREE.Vector3();
-  const moveDirection = new THREE.Vector3(); 
-  
+
+  setInterval(() => {
+    socket.emit("input", keys);
+  }, 1000 / 60);
+    
   function animate( time ) {
     stats.begin();
     cube.rotation.x = time / 2000;
