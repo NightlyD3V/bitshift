@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    // Adds or update players
+    // Adds and update players
     snapshot.forEach(p => {
       let mesh = players.get(p.id);
 
@@ -160,13 +160,14 @@ document.addEventListener("DOMContentLoaded", function () {
         new THREE.BoxGeometry(1, 1, 1),
         new THREE.MeshBasicMaterial({ color: 0x00ff00 })
       );
-
       scene.add(mesh);
       players.set(p.id, mesh);
-    }
-    mesh.position.set(p.x, p.y, p.z);
+      mesh.position.set(p.x, p.y, p.z);
+      } else {
+      mesh.position.x += (p.x - mesh.position.x) * lerpFactor;
+      mesh.position.y += (p.y - mesh.position.y) * lerpFactor;
+      mesh.position.z += (p.z - mesh.position.z) * lerpFactor;  
     });
-  });
     
   
   // Remove player
