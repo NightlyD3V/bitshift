@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   setInterval(() => {
-    socket.emit("input", keys);
+    socket.emit("input", input);
   }, 1000 / 60);
     
   function animate( time ) {
