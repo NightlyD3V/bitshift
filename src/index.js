@@ -3,6 +3,7 @@ console.log("Hey, NightlyD3V here, thanks for checking out my site and taking a 
 const socket = io("https://chat-server-3bcx.onrender.com", { query: {type: "game"} });
 const otherPlayers = {};
 const players = new Map();
+let localPlayerId = socket.id; 
 
 document.addEventListener("DOMContentLoaded", function () {
   // STATISTICS
@@ -186,8 +187,8 @@ document.addEventListener("DOMContentLoaded", function () {
       players.delete(id);
     }
   });
-  // CAMERA CONTROLS
-  const cameraOffset = new THREE.Vector3(0, 10, 15); // tweak for your isometric angle
+  // CAMERA FOLLOW
+  const cameraOffset = new THREE.Vector3(0, 10, 15);
 
   function updateCamera() {
     const localMesh = players.get(localPlayerId);
