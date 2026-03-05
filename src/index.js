@@ -202,7 +202,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
     
   // PLAYER CONTROLS
-  const input = { forward: false, backward: false, left: false, right: false };
+  const input = { forward: false, back: false, left: false, right: false };
+  const dir = new THREE.Vector3();
+
+  if (input.forward) dir.add(cameraForward);
+  if (input.backward) dir.sub(cameraForward);
+  if (input.left) dir.sub(cameraRight);
+  if (input.right) dir.add(cameraRight);
+  if (dir.length() > 0) dir.normalize();
+
+  socket.emit("input", { x: dir.x, z: dir.z });
 
   window.addEventListener('keydown', (e) => {
     switch(e.code){
@@ -224,7 +233,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   setInterval(() => {
     socket.emit("input", input);
-  }, 1000 / 60);
+  }, 1000 / 30);
     
   function animate( time ) {
     stats.begin();
