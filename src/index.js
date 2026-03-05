@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
   const gpuName = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : 'Unknown';
 
-  if (/Intel|Software|Microsoft Basic/i.test(gpuName)) {
+  if (!debugInfo || /Intel|Software|Microsoft Basic/i.test(gpuName)) {
     const warning = document.createElement('div');
     warning.style.position = 'fixed';
     warning.style.top = '10px';
