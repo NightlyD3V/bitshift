@@ -1,4 +1,4 @@
-console.log("Hey, NightlyD3V here, thanks for checking out my site and taking a peak at the code.");
+console.log("Hey, NightlyD3V here, thanks for checking out my site and taking a peek at the code.");
 // GLOBALS 
 const socket = io("https://chat-server-3bcx.onrender.com", { query: {type: "game"} });
 const otherPlayers = {};
@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (!mesh) {
         mesh = new THREE.Mesh(
-          new THREE.BoxGeometry(1, 1, 1),
+          new THREE.BoxGeometry(1, 2, 1),
           new THREE.MeshBasicMaterial({ color: 0x00ff00 })
         );
         scene.add(mesh);
