@@ -202,21 +202,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
     
   // PLAYER CONTROLS
-  const input = { forward: false, back: false, left: false, right: false };
-  const dir = new THREE.Vector3();
-
-  if (input.forward) dir.add(cameraForward);
-  if (input.backward) dir.sub(cameraForward);
-  if (input.left) dir.sub(cameraRight);
-  if (input.right) dir.add(cameraRight);
-  if (dir.length() > 0) dir.normalize();
-
-  socket.emit("input", { x: dir.x, z: dir.z });
-
+  const input = { forward: false, backward: false, left: false, right: false };
+  
   window.addEventListener('keydown', (e) => {
     switch(e.code){
       case 'KeyW': input.forward = true; break;
-      case 'KeyS': input.back = true; break;
+      case 'KeyS': input.backward = true; break;
       case 'KeyA': input.left = true; break;
       case 'KeyD': input.right = true; break;
     }
@@ -225,14 +216,31 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener('keyup', (e) => {
     switch(e.code){
       case 'KeyW': input.forward = false; break;
-      case 'KeyS': input.back = false; break;
+      case 'KeyS': input.backward = false; break;
       case 'KeyA': input.left = false; break;
       case 'KeyD': input.right = false; break;
     }
   });
 
   setInterval(() => {
-    socket.emit("input", input);
+    const cameraForward = new THREE.Vector3();
+    camera.getWorldDirection(cameraForward);
+    cameraForward.y = 0;
+    cameraForward.normalize();
+
+    const cameraRight = new THREE.Vector3();
+    cameraRight.crossVectors(cameraForward, new THREE.Vector3(0,1,0)).normalize();
+
+    const dir = new THREE.Vector3();
+
+    if (input.forward) dir.add(cameraForward);
+    if (input.backward) dir.sub(cameraForward);
+    if (input.left) dir.sub(cameraRight);
+    if (input.right) dir.add(cameraRight);
+
+    if (dir.length() > 0) dir.normalize();
+
+    socket.emit("input", { x: dir.x, z: dir.z });
   }, 1000 / 30);
     
   function animate( time ) {
