@@ -1,6 +1,5 @@
 console.log("Hey, NightlyD3V here, thanks for checking out my site and taking a peak at the code.");
 // GLOBALS 
-const canvas = document.createElement('canvas');
 const socket = io("https://chat-server-3bcx.onrender.com", { query: {type: "game"} });
 const otherPlayers = {};
 const players = new Map();
@@ -66,9 +65,10 @@ document.addEventListener("DOMContentLoaded", function () {
   
   // RENDERER
   const renderer = new THREE.WebGLRenderer({ 
-    canvas, 
-    context: canvas.getContext('webgl12', { powerPreference: 'high-performance'})
+    antialias: true,
+    powerPreference: 'high-performance' // Attempt to use best GPU  
   });
+
   renderer.setSize( window.innerWidth, window.innerHeight );
   renderer.setAnimationLoop( animate );
   document.body.appendChild( renderer.domElement );
