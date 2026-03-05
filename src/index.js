@@ -64,7 +64,10 @@ document.addEventListener("DOMContentLoaded", function () {
   scene.add(grid);
   
   // RENDERER
-  const renderer = new THREE.WebGLRenderer();
+  const context = document.createElement('canvas').getContext('webgl2', {
+    powerPreference: 'high-performance'
+  });
+  const renderer = new THREE.WebGLRenderer({ context });
   renderer.setSize( window.innerWidth, window.innerHeight );
   renderer.setAnimationLoop( animate );
   document.body.appendChild( renderer.domElement );
