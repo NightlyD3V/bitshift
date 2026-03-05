@@ -72,6 +72,27 @@ document.addEventListener("DOMContentLoaded", function () {
   renderer.setSize( window.innerWidth, window.innerHeight );
   renderer.setAnimationLoop( animate );
   document.body.appendChild( renderer.domElement );
+
+  //CHECK USER GPU FOR LOW POWER
+  const gl = renderer.getContext();
+  const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+  const gpuName = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : 'Unknown';
+
+  if (/Intel|Software|Microsoft Basic/i.test(gpuName)) {
+    const warning = document.createElement('div');
+    warning.style.position = 'fixed';
+    warning.style.top = '10px';
+    warning.style.left = '50%';
+    warning.style.transform = 'translateX(-50%)';
+    warning.style.padding = '8px 16px';
+    warning.style.backgroundColor = 'rgba(255, 80, 80, 0.9)';
+    warning.style.color = 'white';
+    warning.style.fontFamily = 'sans-serif';
+    warning.style.borderRadius = '4px';
+    warning.style.zIndex = 9999;
+    warning.innerText = 'Performance may improve if you enable a high-performance GPU in your system/browser.';
+    document.body.appendChild(warning);
+  }
   
   // CAMERA CONTROLS
   const controls = new THREE.OrbitControls( camera, renderer.domElement );
