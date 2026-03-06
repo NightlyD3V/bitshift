@@ -193,16 +193,19 @@ document.addEventListener("DOMContentLoaded", function () {
         players.set(p.id, mesh);
         mesh.position.set(p.x, p.y, p.z);
       } else {
-        const targetAngle = Math.atan2(moveDir.x, moveDir.z);
-        mesh.rotation.y = THREE.MathUtils.lerp(
-          mesh.rotation.y,
-          targetAngle,
-          0.15
-        );
+          const moveDir = new THREE.Vector3(p.vx,0,p.vz);
+          if (moveDir.lengthSq() > 0.0001) {
+            const targetAngle = Math.atan2(moveDir.x, moveDir.z);
+            mesh.rotation.y = THREE.MathUtils.lerp(
+              mesh.rotation.y,
+              targetAngle,
+              0.2
+            );
+          }
         mesh.position.x += (p.x - mesh.position.x) * 0.1;
         mesh.position.y += (p.y - mesh.position.y) * 0.1;
         mesh.position.z += (p.z - mesh.position.z) * 0.1; 
-      }
+      };
     });
   });
     
