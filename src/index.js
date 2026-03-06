@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
         mesh.position.set(p.x, p.y, p.z);
       } else {
           moveDir.set(p.vx, 0, p.vz);
-          if (moveDir.lengthSq() > 0.0001) {
+          if (moveDir.lengthSq() > 0.01) {
             mesh.lastAngle = Math.atan2(moveDir.x, moveDir.z);
           }
         mesh.rotation.y = lerpAngle(mesh.rotation.y, mesh.lastAngle, 0.2);
