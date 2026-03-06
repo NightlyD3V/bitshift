@@ -181,6 +181,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // Adds and update players
+    const moveDir = new THREE.Vector3();
     snapshot.forEach(p => {
       let mesh = players.get(p.id);
 
@@ -193,7 +194,7 @@ document.addEventListener("DOMContentLoaded", function () {
         players.set(p.id, mesh);
         mesh.position.set(p.x, p.y, p.z);
       } else {
-          const moveDir = new THREE.Vector3(p.vx,0,p.vz);
+          moveDir.set(p.vx, 0, p.vz);
           if (moveDir.lengthSq() > 0.0001) {
             const targetAngle = Math.atan2(moveDir.x, moveDir.z);
             mesh.rotation.y = THREE.MathUtils.lerp(
