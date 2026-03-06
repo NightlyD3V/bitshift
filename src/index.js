@@ -167,6 +167,12 @@ document.addEventListener("DOMContentLoaded", function () {
   return a + (b - a) * t;
   };
 
+  function lerpAngle(a, b, t) {
+    let diff = b - a;
+    diff = ((diff + Math.PI) % (Math.PI * 2)) - Math.PI;
+    return a + diff * t;
+  };
+
   socket.on("worldUpdate", snapshot => {
     const activeIds = new Set(snapshot.map(p => p.id));
 
@@ -198,7 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (moveDir.lengthSq() > 0.0001) {
             const targetAngle = Math.atan2(moveDir.x, moveDir.z);
             mesh.rotation.y = THREE.MathUtils.lerp(
-              mesh.rotation.y,
+              mesh.rotation.y = lerpAngle(mesh.rotation.y, targetAngle, 0.2),
               targetAngle,
               0.2
             );
