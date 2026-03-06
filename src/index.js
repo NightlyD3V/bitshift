@@ -196,6 +196,7 @@ document.addEventListener("DOMContentLoaded", function () {
           new THREE.BoxGeometry(1, 2, 1),
           new THREE.MeshBasicMaterial({ color: 0x00ff00 })
         );
+        mesh.lastAngle = 0;
         scene.add(mesh);
         players.set(p.id, mesh);
         mesh.position.set(p.x, p.y, p.z);
@@ -203,11 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
           moveDir.set(p.vx, 0, p.vz);
           if (moveDir.lengthSq() > 0.0001) {
             const targetAngle = Math.atan2(moveDir.x, moveDir.z);
-            mesh.rotation.y = THREE.MathUtils.lerp(
-              mesh.rotation.y = lerpAngle(mesh.rotation.y, targetAngle, 0.2),
-              targetAngle,
-              0.2
-            );
+            mesh.rotation.y = lerpAngle(mesh.rotation.y, mesh.lastAngle, 0.2);
           }
         mesh.position.x += (p.x - mesh.position.x) * 0.1;
         mesh.position.y += (p.y - mesh.position.y) * 0.1;
