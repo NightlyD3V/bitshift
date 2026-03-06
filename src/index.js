@@ -203,9 +203,9 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
           moveDir.set(p.vx, 0, p.vz);
           if (moveDir.lengthSq() > 0.0001) {
-            const targetAngle = Math.atan2(moveDir.x, moveDir.z);
-            mesh.rotation.y = lerpAngle(mesh.rotation.y, mesh.lastAngle, 0.2);
+            mesh.lastAngle = Math.atan2(moveDir.x, moveDir.z);
           }
+        mesh.rotation.y = lerpAngle(mesh.rotation.y, mesh.lastAngle, 0.2);
         mesh.position.x += (p.x - mesh.position.x) * 0.1;
         mesh.position.y += (p.y - mesh.position.y) * 0.1;
         mesh.position.z += (p.z - mesh.position.z) * 0.1; 
